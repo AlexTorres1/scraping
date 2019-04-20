@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
     <title>Scrapper</title>
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">  
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
     <link rel="stylesheet" href="./css/style.css">
   </head>
   <body>
@@ -23,26 +18,36 @@
                 playlist_add
                 </i>The Scraper</a>
             <ul class="right hide-on-med-and-down">
-                <li><a class="waves-effect waves-light btn">Saved Articles</a></li>
-                <li><a class="waves-effect waves-light btn">Button <i class="material-icons right">cloud</i></a></li>
-                <!-- <li><a class="waves-effect waves-light btn-large">Large Button</a></li>  -->
+                <li><a class="waves-effect waves-light btn" id="saved">Scrape</a></li>
+                <li><a class="waves-effect waves-light btn" id="scrape">Clear</a></li>
+                <li><a class="waves-effect waves-light btn" id="addedScrape">Save Article</a></li> 
               </ul>
           </div>
         </nav>
       </div>
     </main>
 
-    <div class=jumbotron>
+    
+      <div class="row"> 
+        <div id="mainHeader" class="col s12 center-align"></div>
+        <div id="articles"></div>
+      </div>
 
 
+    <!-- Modal Structure -->
+    <div id="modal2" class="modal">
+      <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+      </div>
     </div>
-    <div id="wrapper">
-      <!-- <h1>Note Scraper</h1>
-      <h2><i>If you can do this...the homework should be no problem.</i></h2> -->
-      <div id="articles"></div>
-      <div id="notes"></div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="app.js"></script>
+
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>  
+      <!-- Compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <script src="app.js"></script>
   </body>
 </html>

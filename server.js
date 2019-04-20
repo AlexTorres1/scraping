@@ -33,7 +33,7 @@ mongoose.connect("mongodb://localhost/scrapper", { useNewUrlParser: true });
 // A GET route for scraping the medium website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
-  axios.get("https://www.reddit.com/").then(function(response) {
+  axios.get("https://www.yahoo.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
 
@@ -116,17 +116,17 @@ app.post("/articles/:id", function(req, res) {
       // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
       return db.Article.findOneAndUpdate({_id:req.params.id}, { $set: { note: dbNote._id } }, { new: true });
     })
-    .then(function(dbUser) {
+    .then((dbUser)=> {
       // If the User was updated successfully, send it back to the client
       res.json(dbUser);
     })
-    .catch(function(err) {
+    .catch((err)=> {
       // If an error occurs, send it back to the client
       res.json(err);
     });
 });
 
 // Start the server
-app.listen(PORT, function() {
-  console.log("App running on port " + PORT + "!");
+app.listen(PORT, ()=> {
+  console.log(`App running on port " ${PORT}`);
 });
