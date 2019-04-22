@@ -11,7 +11,7 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
-var PORT = 3000;
+var PORT = 5000;
 
 // Initialize Express
 var app = express();
@@ -36,8 +36,9 @@ app.get("/scrape", function(req, res) {
   axios.get("https://www.yahoo.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
-
-    // Now, we grab every h2 within an article tag, and do the following:
+  db.Article.remove({},(err)=>
+  {
+    console.log("Cleared")
     $("h3").each(function(i, element) {
       // Save an empty result object
       var result = {};
@@ -58,12 +59,15 @@ console.log(result)
         })
         .catch(function(err) {
           // If an error occurred, send it to the client
-          return res.json(err);
+          
         });
     });
-
-    // If we were able to successfully scrape and save an Article, send a message to the client
-    res.send("Scrape Complete");
+    res.json({message:"OK"});
+    // If we were able to successfully scrape and save an Article, send a message to the client("Scrape Complete"
+    
+  }); 
+    // Now, we grab every h2 within an article tag, and do the following:
+   
   });
 });
 
@@ -102,6 +106,42 @@ app.get("/articles/:id", function(req, res) {
 
 });
 
+app.post("/SavedArticles/:id", function(req, res) {
+  // TODO
+  // ====
+  // save the new note that gets posted to the Notes collection
+  // then find an article from the req.params.id
+  // and update it's "note" property with the _id of the new note
+
+  db.Article.findOne({_id:req.params.id})
+    // Specify that we want to populate the retrieved libraries with any associated books
+    
+    .then(function(article) {
+      // If any Libraries are found, send them to the client with any associated Books
+      res.json(article);
+    })
+    .catch(function(err) {
+      db.SavedArticles.create(article)
+    .then(function(dbNote) {
+      // If a Note was created successfully, find one User (there's only one) and push the new Note's _id to the User's `notes` array
+      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
+      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+      return db.Article.findOneAndUpdate({_id:req.params.id}, { $set: { note: dbNote._id } }, { new: true });
+    })
+    .then((dbUser)=> {
+      // If the User was updated successfully, send it back to the client
+      res.json(dbUser);
+    })
+    .catch((err)=> {
+      // If an error occurs, send it back to the client
+      res.json(err);
+    });
+      // If an error occurs, send it back to the client
+      res.json(err);
+    });
+
+  
+});
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function(req, res) {
   // TODO
@@ -124,6 +164,10 @@ app.post("/articles/:id", function(req, res) {
       // If an error occurs, send it back to the client
       res.json(err);
     });
+});
+
+app.delete("/articles/:id", function(req, res){
+
 });
 
 // Start the server
